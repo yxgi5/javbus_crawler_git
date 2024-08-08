@@ -32,8 +32,8 @@ def get_data_single(url):
         with open('fail_url.txt', 'a') as fd:
             fd.write('%s\n' % url)
         print("Fail to crawl %s\ncrawl next detail page......" % url)
-
-    yield dict_jav
+    else:
+        yield dict_jav
 
 def join_db(url,is_uncensored):
     """the detail_dict of the url join the db"""

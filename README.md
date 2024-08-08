@@ -1,8 +1,9 @@
 # javbus_crawler
 
-使用前修改`crawler.py`的入口链接
+使用前修改 `crawler.py`的入口链接 以及 cookie
 
 `homeurl_handler`的参数可以是
+
 ```
 https://www.javbus.com/ja/SDJS-270
 https://www.javbus.com/ja
@@ -11,17 +12,20 @@ https://www.javbus.com
 ```
 
 `singleurl_handler`的参数可以是
+
 ```
 https://www.javbus.com/ja/SDJS-270
 https://www.javbus.com/SDJS-270
 ```
 
-这个参数的最后暂时不能以`/`结尾。不过可以用`urlparse`来改进。
+这个参数的最后暂时不能以 `/`结尾。不过可以用 `urlparse`来改进。
 
 sqlite3数据库建立的条目有
+
 ```
 URL       TEXT PRIMARY KEY,
 識別碼    TEXT,
+標題     TEXT,
 封面      TEXT,
 樣品圖像  TEXT, 
 發行日期  TEXT,
@@ -36,9 +40,4 @@ URL       TEXT PRIMARY KEY,
 无码      INTEGER)
 ```
 
-
-
-可以很方便修改为传参数调用`singleurl_handler`
-
-
-
+可以很方便修改为传参数调用 `singleurl_handler`

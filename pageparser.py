@@ -240,6 +240,10 @@ def parser_content(html):
         sample_images_text += '%s\n' % tex 
     categories['樣品圖像'] = sample_images_text
 
+    #標題加入字典
+    title = soup.find('title').text.strip().replace(" - JavBus","")
+    categories['標題'] = title
+
     return categories
 
 

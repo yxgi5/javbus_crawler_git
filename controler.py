@@ -17,6 +17,7 @@ def create_db():
         CREATE TABLE IF NOT EXISTS JAVBUS_DATA(
             URL       TEXT PRIMARY KEY,
             識別碼    TEXT,
+            標題      TEXT,
             封面      TEXT,
             樣品圖像  TEXT, 
             發行日期  TEXT,
@@ -42,14 +43,14 @@ def write_data(dict_jav, uncensored):
     cursor = conn.cursor()
     #对数据解码为unicode
     # insert_data = map(_decode_utf8, (dict_jav['URL'], dict_jav['識別碼'], dict_jav['發行日期'], dict_jav['長度'], dict_jav['導演'], dict_jav['製作商'], dict_jav['發行商'], dict_jav['系列'], dict_jav['演員'], dict_jav['類別'], dict_jav['磁力链接']))
-    insert_data = list(map(_decode_utf8, (dict_jav['URL'], dict_jav['識別碼'], dict_jav['封面'], dict_jav['樣品圖像'], dict_jav['發行日期'], dict_jav['長度'], dict_jav['導演'], dict_jav['製作商'], dict_jav['發行商'], dict_jav['系列'], dict_jav['演員'], dict_jav['類別'], dict_jav['磁力链接'])))
+    insert_data = list(map(_decode_utf8, (dict_jav['URL'], dict_jav['識別碼'], dict_jav['標題'], dict_jav['封面'], dict_jav['樣品圖像'], dict_jav['發行日期'], dict_jav['長度'], dict_jav['導演'], dict_jav['製作商'], dict_jav['發行商'], dict_jav['系列'], dict_jav['演員'], dict_jav['類別'], dict_jav['磁力链接'])))
     insert_data.append(uncensored)
     # insert_data = map(_decode_utf8, (dict_jav['URL'], dict_jav['識別碼'], dict_jav['發行日期'], dict_jav['長度'], dict_jav['導演'], dict_jav['製作商'], dict_jav['發行商'], dict_jav['系列'], dict_jav['演員'], dict_jav['類別'], dict_jav['磁力链接'], uncensored))
     # insert_data = tuple(insert_data)
     #插入数据
     cursor.execute('''
-    INSERT INTO JAVBUS_DATA (URL, 識別碼, 封面, 樣品圖像, 發行日期, 長度, 導演, 製作商, 發行商, 系列, 演員, 類別, 磁力链接, 无码)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO JAVBUS_DATA (URL, 識別碼, 標題, 封面, 樣品圖像, 發行日期, 長度, 導演, 製作商, 發行商, 系列, 演員, 類別, 磁力链接, 无码)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ''', insert_data)
     cursor.close()
     conn.commit()
