@@ -22,6 +22,19 @@ def get_dict(url):
         yield dict_jav, detail_url
 
 
+def get_data_single(url):
+    """get the dict of the detail page and yield the dict"""
+
+    try:
+        detail_page_html = downloader.get_html(url)
+        dict_jav = pageparser.parser_content(detail_page_html)
+    except:
+        with open('fail_url.txt', 'a') as fd:
+            fd.write('%s\n' % url)
+        print("Fail to crawl %s\ncrawl next detail page......" % url)
+
+    yield dict_jav
+
 def join_db(url,is_uncensored):
     """the detail_dict of the url join the db"""
 
@@ -36,9 +49,18 @@ def join_db(url,is_uncensored):
             # time.sleep(60)
             # exit()
 
+def join_db_single(url,is_uncensored):
+    """the detail_dict of the url join the db"""
 
+    for dict_jav_data in get_data_single(url):
+        if controler.check_url_not_in_table(url):
+            print("detail_url = %s not exist" % url)
+            controler.write_data(dict_jav_data, is_uncensored)
+        else:
+            print("detail_url = %s exists" % url)
+            continue
 
-def main(entrance):
+def homeurl_handler(entrance):
     #创建数据表
     controler.create_db()
     #无码为1，有码为0
@@ -55,7 +77,15 @@ def main(entrance):
         next_page_html = downloader.get_html(next_page_url)
         next_page_url = pageparser.get_next_page_url(entrance, next_page_html)
 
+def singleurl_handler(entrance):
+    #创建数据表
+    controler.create_db()
+    #无码为1，有码为0
+    is_uncensored = 1 if 'uncensored' in entrance else 0
+    join_db_single(entrance, is_uncensored)
 
 if __name__ == '__main__':
-    main('https://www.javbus.com')
-    main('https://www.javbus.com/uncensored')
+    # homeurl_handler('https://www.javbus.com/ja')
+    # homeurl_handler('https://www.javbus.com/ja/uncensored')
+    # homeurl_handler('https://www.javbus.com/ja/SDJS-271') # 1 + 5
+    singleurl_handler('https://www.javbus.com/ja/SDJS-271')
