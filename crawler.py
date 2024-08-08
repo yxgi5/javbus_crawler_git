@@ -5,6 +5,7 @@ import controler
 import downloader
 import pageparser
 import time
+from urllib.request import HTTPError, URLError
 
 def get_dict(url):
     """get the dict of the detail page and yield the dict"""
@@ -14,9 +15,19 @@ def get_dict(url):
         try:
             detail_page_html = downloader.get_html(detail_url)
             dict_jav = pageparser.parser_content(detail_page_html)
-        except:
+        # except Exception as err:
+        #     with open('fail_url.txt', 'a') as fd:
+        #         fd.write('%s %d: %s\n' % ('ERROR CODE', err.code, url))
+        #     print("Fail to crawl %s\ncrawl next detail page......" % detail_url)
+        #     continue
+        except HTTPError as err:
             with open('fail_url.txt', 'a') as fd:
-                fd.write('%s\n' % detail_url)
+                fd.write('%s %d: %s\n' % ('ERROR CODE', err.code, url))
+            print("Fail to crawl %s\ncrawl next detail page......" % detail_url)
+            continue
+        except URLError as err:
+            with open('fail_url.txt', 'a') as fd:
+                fd.write('%s %s: %s\n' % ('ERROR Reason', err.reason, url))
             print("Fail to crawl %s\ncrawl next detail page......" % detail_url)
             continue
         yield dict_jav, detail_url
@@ -28,9 +39,17 @@ def get_data_single(url):
     try:
         detail_page_html = downloader.get_html(url)
         dict_jav = pageparser.parser_content(detail_page_html)
-    except:
+    # except Exception as err:
+    #     with open('fail_url.txt', 'a') as fd:
+    #         fd.write('%s %d: %s\n' % ('ERROR CODE', err.code, url))
+    #     print("Fail to crawl %s\ncrawl next detail page......" % url)
+    except HTTPError as err:
         with open('fail_url.txt', 'a') as fd:
-            fd.write('%s\n' % url)
+            fd.write('%s %d: %s\n' % ('ERROR CODE', err.code, url))
+        print("Fail to crawl %s\ncrawl next detail page......" % url)
+    except URLError as err:
+        with open('fail_url.txt', 'a') as fd:
+            fd.write('%s %s: %s\n' % ('ERROR Reason', err.reason, url))
         print("Fail to crawl %s\ncrawl next detail page......" % url)
     else:
         yield dict_jav
@@ -88,4 +107,6 @@ if __name__ == '__main__':
     # homeurl_handler('https://www.javbus.com/ja')
     # homeurl_handler('https://www.javbus.com/ja/uncensored')
     # homeurl_handler('https://www.javbus.com/ja/SDJS-271') # 1 + 5
-    singleurl_handler('https://www.javbus.com/ja/SDJS-271')
+    # singleurl_handler('https://www.javbus.com/ja/SDJS-271')
+    # singleurl_handler('https://www.javbus.com/ja/SP-1000') # test 404 error
+    singleurl_handler('https://www.javbus.com/ja/DVH-592')

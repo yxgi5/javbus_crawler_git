@@ -53,10 +53,10 @@ def get_html(url, Referer_url=None):
         #     raise Exception(ret)
         #     # print(ret)
         # except IncompleteRead:
-        except Exception as ret:
-            print(ret)
+        except Exception as err:
+            print(err)
             if i == 4:
-               raise       # give up after 5 attempts
+               raise     # give up after 5 attempts
 
     html = soup.prettify()
     return html
