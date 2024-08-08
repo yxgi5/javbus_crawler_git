@@ -2,6 +2,7 @@
 #-*-coding:utf-8-*-
 
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse
 import downloader
 import re
 
@@ -50,8 +51,26 @@ def _parser_magnet(html):
     #存放磁力的字符串
     magnet = ''
     soup = BeautifulSoup(html,"html.parser")
-    for td in soup.select('td[width="70%"]'):
-        magnet += td.a['href'] + '\n'
+    # for td in soup.select('td[width="70%"]'):
+        # magnet += td.a['href'] + '\n'
+    
+    avdist={'title':'','magnet':'','size':'','date':''}
+    for tr in soup.find_all('tr'):
+        i=0
+        for td in tr:
+            if(td.string):
+                continue
+            i=i+1
+            avdist['magnet']=td.a['href']
+            if (i%3 == 1):
+                avdist['title'] = td.a.text.replace(" ", "").replace("\t", "").replace("\r\n","").replace("\n","")
+            if (i%3 == 2):
+                avdist['size'] = td.a.text.replace(" ", "").replace("\t", "").replace("\r\n","").replace("\n","")
+            if (i%3 == 0):
+                avdist['date'] = td.a.text.replace(" ", "").replace("\t", "").replace("\r\n","").replace("\n","")
+        # print(avdist)
+        magnet += '%s\n' % avdist
+
     return magnet
 
 def get_next_page_url(entrance, html):
@@ -143,6 +162,20 @@ def parser_content(html):
     magnet_html = downloader.get_html(_get_cili_url(soup), Referer_url=url)
     magnet = _parser_magnet(magnet_html)
     categories['磁力链接'] = magnet
+
+    #封面链接加入字典
+    parsed = urlparse(url)
+    bigimage_url = parsed.scheme+'://'+parsed.netloc+soup.select_one('a[class="bigImage"]').find('img')['src']
+    categories['封面'] = bigimage_url
+
+    #樣品圖像加入字典
+    sample_images_doc=soup.select('a[class="sample-box"]')
+    sample_images = (i['href'] for i in sample_images_doc) if sample_images_doc else ''
+    sample_images_text = ''
+    for tex in sample_images:
+        # sample_images_text += '%s   ' % tex 
+        sample_images_text += '%s\n' % tex 
+    categories['樣品圖像'] = sample_images_text
 
     return categories
 
