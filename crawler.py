@@ -7,6 +7,7 @@ import pageparser
 import time
 from urllib.request import HTTPError, URLError
 from http.client import IncompleteRead
+from requests.exceptions import Timeout, RequestException
 
 def get_dict(url):
     """get the dict of the detail page and yield the dict"""
@@ -36,6 +37,19 @@ def get_dict(url):
                 fd.write('%s %s: %s\n' % ('ERROR Reason', err.reason, url))
             print("Fail to crawl %s\ncrawl next detail page......" % detail_url)
             continue
+        except Timeout as err:
+            # print("The request timedout!")
+            with open('fail_url.txt', 'a') as fd:
+                fd.write('%s: %s\n' % ('ERROR Request timedout', url))
+            print("Fail to crawl %s\ncrawl next detail page......" % url)
+            continue
+        except RequestException as err:
+            # print("Request failed:", err)
+            with open('fail_url.txt', 'a') as fd:
+                fd.write('%s: %s\n' % ('ERROR Request failed', url))
+            print("Fail to crawl %s\ncrawl next detail page......" % url)
+            continue
+        
         yield dict_jav, detail_url
 
 
@@ -60,6 +74,16 @@ def get_data_single(url):
     except URLError as err:
         with open('fail_url.txt', 'a') as fd:
             fd.write('%s %s: %s\n' % ('ERROR Reason', err.reason, url))
+        print("Fail to crawl %s\ncrawl next detail page......" % url)
+    except Timeout as err:
+        # print("The request timedout!")
+        with open('fail_url.txt', 'a') as fd:
+            fd.write('%s: %s\n' % ('ERROR Request timedout', url))
+        print("Fail to crawl %s\ncrawl next detail page......" % url)
+    except RequestException as err:
+        # print("Request failed:", err)
+        with open('fail_url.txt', 'a') as fd:
+            fd.write('%s: %s\n' % ('ERROR Request failed', url))
         print("Fail to crawl %s\ncrawl next detail page......" % url)
     else:
         yield dict_jav
