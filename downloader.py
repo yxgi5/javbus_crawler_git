@@ -4,6 +4,8 @@
 import requests
 import urllib.request
 from bs4 import BeautifulSoup
+from http.client import IncompleteRead
+import time
 
 proxy_addr = "127.0.0.1:8118"
 
@@ -11,12 +13,15 @@ proxy_addr = "127.0.0.1:8118"
 #     'User-Agent	' : 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0', 
 # }
 
-def get_html(url, Referer_url=None):
+def get_html(url, Referer_url=None, unsafe=False, max_retries=5):
     '''get_html(url),download and return html'''
     # if Referer_url:
     #     headers['Referer'] = Referer_url
     # req = requests.get(url, headers=headers)
     # return req.content
+
+    bytes_ranges_supported = False
+    html_raw = b''
 
     if Referer_url==None:
         Referer_url = url
@@ -45,18 +50,52 @@ def get_html(url, Referer_url=None):
     ]
     urllib.request.install_opener(opener)
 
-    for i in range(5):
+    # Check if is supported bytes ranges
+    try:
+        with urllib.request.urlopen(url) as response:
+            if response.headers.get('Accept-Ranges') == 'bytes':
+                bytes_ranges_supported = True
+    except:
+        pass
+
+
+    i = max_retries
+    while (i > 0):
+        i -= 1
         try:
-            soup = BeautifulSoup(urllib.request.urlopen(url).read().decode('utf-8', errors='ignore'), 'lxml')
-            break
-        # except Exception as ret:
-        #     raise Exception(ret)
-        #     # print(ret)
-        # except IncompleteRead:
-        except Exception as err:
-            print(err)
-            if i == 4:
-               raise     # give up after 5 attempts
+            if bytes_ranges_supported:
+                url.add_header('Range', 'bytes=%d-' % len(html_raw))
+            with urllib.request.urlopen(url) as response:
+                html_raw += response.read()
+                break  # If the read was successful, break the loop
+        except IncompleteRead as err:
+            html_raw += err.partial
+            if not bytes_ranges_supported and (unsafe or i == 0):
+                break  # If bytes ranges not supported and unsafe or no retries left, break the loop
+        except:
+            raise
+        
+        finally:
+            try:
+                time.sleep(0.010)
+            except OSError:
+                break
+            except KeyboardInterrupt:
+                raise
+    
+    soup = BeautifulSoup(html_raw.decode('utf-8', errors='ignore'), 'html.parser')
+    # for i in range(5):
+    #     try:
+    #         soup = BeautifulSoup(urllib.request.urlopen(url).read().decode('utf-8', errors='ignore'), 'lxml')
+    #         break
+    #     # except Exception as ret:
+    #     #     raise Exception(ret)
+    #     #     # print(ret)
+    #     # except IncompleteRead:
+    #     except Exception as err:
+    #         print(err)
+    #         if i == 4:
+    #            raise     # give up after 5 attempts
 
     html = soup.prettify()
     return html
