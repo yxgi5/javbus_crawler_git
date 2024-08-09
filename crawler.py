@@ -90,6 +90,8 @@ def join_db_single(url,is_uncensored):
             continue
 
 def homeurl_handler(entrance):
+    if entrance[-1] =='/':
+        entrance = entrance[:-1]
     #创建数据表
     controler.create_db()
     #无码为1，有码为0
@@ -107,6 +109,8 @@ def homeurl_handler(entrance):
         next_page_url = pageparser.get_next_page_url(entrance, next_page_html)
 
 def singleurl_handler(entrance):
+    if entrance[-1] =='/':
+        entrance = entrance[:-1]
     #创建数据表
     controler.create_db()
     #无码为1，有码为0
