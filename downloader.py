@@ -222,13 +222,11 @@ proxies = {
 
 def get_html(url, Referer_url=None, max_retries=5):
     '''get_html(url),download and return html'''
-    # if Referer_url:
-    #     headers['Referer'] = Referer_url
-    # req = requests.get(url, headers=headers)
-    # return req.content
-
     if Referer_url==None:
         Referer_url = url
+
+    if Referer_url:
+        headers['Referer'] = Referer_url
 
     if max_retries<1:
         max_retries = 1

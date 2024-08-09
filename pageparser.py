@@ -240,6 +240,8 @@ def parser_content(html):
     sample_images = (i['href'] for i in sample_images_doc) if sample_images_doc else ''
     sample_images_text = ''
     for tex in sample_images:
+        if tex[0] == '/':
+            tex = parsed.scheme+'://'+parsed.netloc+tex
         # sample_images_text += '%s   ' % tex 
         sample_images_text += '%s\n' % tex 
     categories['樣品圖像'] = sample_images_text
