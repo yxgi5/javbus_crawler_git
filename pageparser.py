@@ -111,6 +111,8 @@ def parser_content(html):
         code_name = code_name_doc.parent.contents[3].text.strip() if code_name_doc else ''
         categories['識別碼'] = code_name
         #code_name = soup.find('span', text="識別碼:").parent.contents[2].text if soup.find('span', text="識別碼:") else ''
+        if code_name == '':
+            return
 
         date_issue_doc = soup.find('span', text=re.compile("發行日期:"))
         date_issue = date_issue_doc.parent.contents[2].strip() if date_issue_doc else ''
@@ -168,7 +170,9 @@ def parser_content(html):
         code_name = code_name_doc.parent.contents[3].text.strip() if code_name_doc else ''
         categories['識別碼'] = code_name
         #code_name = soup.find('span', text="識別碼:").parent.contents[2].text if soup.find('span', text="識別碼:") else ''
-
+        if code_name == '':
+            return
+        
         date_issue_doc = soup.find('span', text=re.compile("発売日:"))
         date_issue = date_issue_doc.parent.contents[2].strip() if date_issue_doc else ''
         categories['發行日期'] = date_issue

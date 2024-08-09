@@ -49,7 +49,7 @@ def get_dict(url):
                 fd.write('%s: %s\n' % ('ERROR Request failed', url))
             print("Fail to crawl %s\ncrawl next detail page......" % url)
             continue
-        
+
         yield dict_jav, detail_url
 
 
@@ -106,6 +106,9 @@ def join_db_single(url,is_uncensored):
     """the detail_dict of the url join the db"""
 
     for dict_jav_data in get_data_single(url):
+        if dict_jav_data == None:
+            return
+
         if controler.check_url_not_in_table(url):
             print("detail_url = %s not exist" % url)
             controler.write_data(dict_jav_data, is_uncensored)
@@ -147,4 +150,4 @@ if __name__ == '__main__':
     # homeurl_handler('https://www.javbus.com/ja/SDJS-271') # 1 + 5
     # singleurl_handler('https://www.javbus.com/ja/SDJS-271')
     # singleurl_handler('https://www.javbus.com/ja/SP-1000') # test 404 error
-    singleurl_handler('https://www.javbus.com/ja/DVH-592')
+    singleurl_handler('https://www.javbus.com/ja/page/6')
