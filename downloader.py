@@ -237,9 +237,14 @@ def get_html(url, Referer_url=None, max_retries=5):
     for i in range(max_retries):
         try:
             response = requests.get(url, headers=headers, proxies=proxies, timeout=10)
-            break
+            if response.status_code == 200:
+                break
+            elif response.status_code == 404:
+                raise
+            else:
+                response.raise_for_status()
         except Exception as err:
-            print(err)
+            # print(err)
             if i == (max_retries -1):
                raise     # give up after max_retries attempts
 
