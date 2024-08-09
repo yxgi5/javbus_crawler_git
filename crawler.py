@@ -6,6 +6,7 @@ import downloader
 import pageparser
 import time
 from urllib.request import HTTPError, URLError
+from http.client import IncompleteRead
 
 def get_dict(url):
     """get the dict of the detail page and yield the dict"""
@@ -20,6 +21,11 @@ def get_dict(url):
         #         fd.write('%s %d: %s\n' % ('ERROR CODE', err.code, url))
         #     print("Fail to crawl %s\ncrawl next detail page......" % detail_url)
         #     continue
+        except IncompleteRead as err:
+            with open('fail_url.txt', 'a') as fd:
+                fd.write('%s: %s\n' % ('ERROR IncompleteRead', url))
+            print("Fail to crawl %s\ncrawl next detail page......" % detail_url)
+            continue
         except HTTPError as err:
             with open('fail_url.txt', 'a') as fd:
                 fd.write('%s %d: %s\n' % ('ERROR CODE', err.code, url))
@@ -43,6 +49,10 @@ def get_data_single(url):
     #     with open('fail_url.txt', 'a') as fd:
     #         fd.write('%s %d: %s\n' % ('ERROR CODE', err.code, url))
     #     print("Fail to crawl %s\ncrawl next detail page......" % url)
+    except IncompleteRead as err:
+        with open('fail_url.txt', 'a') as fd:
+            fd.write('%s: %s\n' % ('ERROR IncompleteRead', url))
+        print("Fail to crawl %s\ncrawl next detail page......" % url)
     except HTTPError as err:
         with open('fail_url.txt', 'a') as fd:
             fd.write('%s %d: %s\n' % ('ERROR CODE', err.code, url))
