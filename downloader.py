@@ -210,9 +210,12 @@ headers = {
     'sec-ch-ua-mobile': '?0',
     'sec-ch-ua-platform': '"Linux"',
     'sec-fetch-dest': 'document',
-    'sec-fetch-mode': 'no-cors',
+    'sec-fetch-mode': 'navigate',
     'sec-fetch-site': 'same-origin',
+    'sec-fetch-user': '?1',
+    'upgrade-insecure-requests': '1',
     'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36 OPR/90.0.4480.84',
+    'X-Requested-With': 'XMLHttpRequest',
 };
 
 proxies = {
