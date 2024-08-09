@@ -209,7 +209,7 @@ headers = {
     'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="104", "Opera";v="90"',
     'sec-ch-ua-mobile': '?0',
     'sec-ch-ua-platform': '"Linux"',
-    'sec-fetch-dest': 'image',
+    'sec-fetch-dest': 'document',
     'sec-fetch-mode': 'no-cors',
     'sec-fetch-site': 'same-origin',
     'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36 OPR/90.0.4480.84',
