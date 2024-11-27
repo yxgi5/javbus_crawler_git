@@ -1,0 +1,11 @@
+*.db*
+simple_link.md
+todo.md
+log.log
+.idea
+.vscode
+.git
+*.tar.gz
+now_printing*
+*.log
+__pycache__
