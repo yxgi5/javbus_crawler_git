@@ -72,6 +72,26 @@ def write_data(dict_jav):
     conn.commit()
     conn.close()
 
+def refresh_data(dict_jav, url):
+    '''write_data(dict_jav)'''
+
+    # conn = sqlite3.connect("javbus.sqlite3.db")
+    try:
+        conn = sqlite3.connect("file:javbus.sqlite3.db?mode=rw", uri=True)
+    except sqlite3.OperationalError:
+        create_db()
+        conn = sqlite3.connect("file:javbus.sqlite3.db?mode=rw", uri=True)
+    
+    cursor = conn.cursor()
+    # cursor.execute('select _rowid_ from JAVBUS_DATA where URL=? COLLATE NOCASE', (url,))
+    # rowid = cursor.fetchall()
+    # cursor.execute('delete from JAVBUS_DATA where _rowid_=?', (rowid,))
+    cursor.execute('update JAVBUS_DATA set 磁力链接=? where URL=? COLLATE NOCASE', (dict_jav['磁力链接'].encode('utf-8','ignore').decode('utf-8'), url))
+
+    cursor.close()
+    conn.commit()
+    conn.close()
+
 def check_url_not_in_table(url):
     """check_url_in_db(url),if the url isn't in the table it will return True, otherwise return False"""
 
@@ -86,3 +106,18 @@ def check_url_not_in_table(url):
     if check:
         return False
     return True
+
+def read_magnets_from_table(url):
+    """read_magnets_from_table(url),if the url isn't in the table it will return True, otherwise return False"""
+
+    conn = sqlite3.connect("javbus.sqlite3.db")
+    cursor = conn.cursor()
+    # print(url)
+    # cursor.execute('select URL from JAVBUS_DATA where URL=?', (url.decode('utf-8'),))
+    cursor.execute('select 磁力链接 from JAVBUS_DATA where URL=? COLLATE NOCASE', (url,))
+    check = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    if check:
+        return check
+    return

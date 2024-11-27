@@ -68,12 +68,16 @@ def join_db(url):
             print("detail_url = %s not exist" % detail_url)
             controler.write_data(dict_jav_data)
         else:
-            print("detail_url = %s exists" % detail_url)
-            bango_in_page_cnt = bango_in_page_cnt + 1
-            continue
-            # print("it has updated over...window will be closed after 60s")
-            # time.sleep(60)
-            # exit()
+            if dict_jav_data['磁力链接'] == controler.read_magnets_from_table(detail_url)[0][0]:
+                print("detail_url = %s exists" % detail_url)
+                bango_in_page_cnt = bango_in_page_cnt + 1
+                continue
+                # print("it has updated over...window will be closed after 60s")
+                # time.sleep(60)
+                # exit()
+            else:
+                print("detail_url = %s updating" % detail_url)
+                controler.refresh_data(dict_jav_data, detail_url)
     return bango_in_page_cnt
 
 def join_db_single(url):
@@ -87,8 +91,12 @@ def join_db_single(url):
             print("detail_url = %s not exist" % url)
             controler.write_data(dict_jav_data)
         else:
-            print("detail_url = %s exists" % url)
-            continue
+            if dict_jav_data['磁力链接'] == controler.read_magnets_from_table(url)[0][0]:
+                print("detail_url = %s exists" % url)
+                continue
+            else:
+                print("detail_url = %s updating" % url)
+                controler.refresh_data(dict_jav_data, url)
 
 def homeurl_handler(entrance):
     if entrance[-1] =='/':
