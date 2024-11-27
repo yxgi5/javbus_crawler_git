@@ -231,7 +231,7 @@ def parser_content(html):
     categories['磁力链接'] = magnet
 
     #封面链接加入字典
-    if soup.select_one('a[class="bigImage"]').find('img')['src'][0] =   = '/':
+    if soup.select_one('a[class="bigImage"]').find('img')['src'][0] == '/':
         parsed = urlparse(url)
         bigimage_url = parsed.scheme+'://'+parsed.netloc+soup.select_one('a[class="bigImage"]').find('img')['src']
     else:

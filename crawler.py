@@ -124,6 +124,7 @@ if __name__ == '__main__':
     # singleurl_handler('https://www.javbus.com/ja/SP-1000') # test 404 error
     # singleurl_handler('https://www.javbus.com/ja/page/6') # test err url
     # singleurl_handler('https://www.javbus.com/ja/HEYZO-3379') # test uncensored
+    # singleurl_handler('https://www.javbus.com/ja/EZD-269') # test bad page
     # homeurl_handler(sys.argv[1])
     #singleurl_handler(sys.argv[1])
 
