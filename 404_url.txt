@@ -5011,3 +5011,4 @@ https://www.javbus.com/ja/SDNM-391-V-01
 https://www.javbus.com/ja/TSR-BT-001-1
 https://www.javbus.com/ja/TSR-BT-001-2
 https://www.javbus.com/ja/VRB201806011-
+https://www.javbus.com/ja/CST-024
