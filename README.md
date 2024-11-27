@@ -18,8 +18,6 @@ https://www.javbus.com/ja/SDJS-270
 https://www.javbus.com/SDJS-270
 ```
 
-这个参数的最后暂时不能以 `/`结尾。不过可以用 `urlparse`来改进。
-
 sqlite3数据库建立的条目有
 
 ```

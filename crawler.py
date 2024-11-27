@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #-*-coding:utf-8-*-
 
+import sys
 import controler
 import downloader
 import pageparser
@@ -116,10 +117,13 @@ def singleurl_handler(entrance):
     join_db_single(entrance, is_uncensored)
 
 if __name__ == '__main__':
-    # homeurl_handler('https://www.javbus.com/ja')
+    homeurl_handler('https://www.javbus.com/ja')
     homeurl_handler('https://www.javbus.com/ja/uncensored')
     # homeurl_handler('https://www.javbus.com/ja/SDJS-271') # 1 + 5
     # singleurl_handler('https://www.javbus.com/ja/SDJS-271')
     # singleurl_handler('https://www.javbus.com/ja/SP-1000') # test 404 error
-    # singleurl_handler('https://www.javbus.com/ja/page/6') # test
+    # singleurl_handler('https://www.javbus.com/ja/page/6') # test err url
     # singleurl_handler('https://www.javbus.com/ja/HEYZO-3379') # test uncensored
+    # homeurl_handler(sys.argv[1])
+    #singleurl_handler(sys.argv[1])
+
