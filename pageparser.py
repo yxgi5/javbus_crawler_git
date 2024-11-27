@@ -126,7 +126,13 @@ def parser_content(html):
         #duration = soup.find('span', text="長度:").parent.contents[1].strip() if soup.find('span', text="長度:") else ''
 
         director_doc = soup.find('span', text=re.compile("導演:"))
-        director = director_doc.parent.contents[3].text.strip() if director_doc else ''
+        if hasattr(director_doc,'parent'):
+            if len(director_doc.parent.contents) > 3:
+                director = director_doc.parent.contents[3].text.strip() if director_doc else ''
+            else:
+                director = ''
+        else:
+            director = ''
         categories['導演'] = director
         #director = soup.find('span', text="導演:").parent.contents[2].text if soup.find('span', text="導演:") else ''
 
@@ -134,6 +140,11 @@ def parser_content(html):
         manufacturer = manufacturer_doc.parent.contents[3].text.strip() if manufacturer_doc else ''
         categories['製作商'] = manufacturer
         #manufacturer = soup.find('span', text="製作商:").parent.contents[2].text if soup.find('span', text="製作商:") else ''
+        if hasattr(manufacturer_doc,'parent'):
+            is_uncensored = 1 if 'uncensored' in manufacturer_doc.parent.contents[3]['href'] else 0
+        else:
+            is_uncensored = 0
+        categories['無碼'] = is_uncensored
 
         publisher_doc = soup.find('span', text=re.compile("發行商:"))
         publisher = publisher_doc.parent.contents[3].text.strip()  if publisher_doc else ''
@@ -185,7 +196,13 @@ def parser_content(html):
         #duration = soup.find('span', text="長度:").parent.contents[1].strip() if soup.find('span', text="長度:") else ''
 
         director_doc = soup.find('span', text=re.compile("監督:"))
-        director = director_doc.parent.contents[3].text.strip() if director_doc else ''
+        if hasattr(director_doc,'parent'):
+            if len(director_doc.parent.contents) > 3:
+                director = director_doc.parent.contents[3].text.strip() if director_doc else ''
+            else:
+                director = ''
+        else:
+            director = ''
         categories['導演'] = director
         #director = soup.find('span', text="導演:").parent.contents[2].text if soup.find('span', text="導演:") else ''
 
@@ -193,7 +210,10 @@ def parser_content(html):
         manufacturer = manufacturer_doc.parent.contents[3].text.strip() if manufacturer_doc else ''
         categories['製作商'] = manufacturer
         #manufacturer = soup.find('span', text="製作商:").parent.contents[2].text if soup.find('span', text="製作商:") else ''
-        is_uncensored = 1 if 'uncensored' in manufacturer_doc.parent.contents[3]['href'] else 0
+        if hasattr(manufacturer_doc,'parent'):
+            is_uncensored = 1 if 'uncensored' in manufacturer_doc.parent.contents[3]['href'] else 0
+        else:
+            is_uncensored = 0
         categories['無碼'] = is_uncensored
 
         publisher_doc = soup.find('span', text=re.compile("レーベル:"))
@@ -247,6 +267,7 @@ def parser_content(html):
     sample_images_text = ''
     for tex in sample_images:
         if tex[0] == '/':
+            parsed = urlparse(url)
             tex = parsed.scheme+'://'+parsed.netloc+tex
         # sample_images_text += '%s   ' % tex 
         sample_images_text += '%s\n' % tex 
