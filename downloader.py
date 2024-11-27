@@ -240,13 +240,12 @@ def get_html(url, Referer_url=None, max_retries=5):
             if response.status_code == 200:
                 break
             elif response.status_code == 404:
-                raise
-            else:
-                response.raise_for_status()
+                response.raise_for_status() # raise an HTTPError exception at once, if 404 err happens
+
         except Exception as err:
             # print(err)
             if i == (max_retries -1):
-               raise     # give up after max_retries attempts
+               raise     # other exceptions raised after max_retries attempts
 
     html = response.content
     soup = BeautifulSoup(html.decode('utf-8', errors='ignore'), 'html.parser')
