@@ -76,5 +76,20 @@ diff -y -W 100 all_bango_20240821.list db_bango.list | grep -a -F '<' | sed 's/^
 ./auto_start.sh
 ```
 
+# download sample image
 
+like follows, dosen't need cookie
+
+if need proxy and referer
+```
+aria2c --header 'sec-ch-ua: "Google Chrome";v="117", "Not;A=Brand";v="8", "Chromium";v="117"' --header 'sec-ch-ua-mobile: ?0' --header 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36' --header 'sec-ch-ua-platform: "Linux"' --header 'Referer: https://www.javbus.com/ja/' --all-proxy="http://127.0.0.1:8118" \
+https://www.javbus.com/imgs/bigsample/16qx_b_4.jpg
+```
+
+if dosen't need proxy nor referer
+```
+aria2c --header 'sec-ch-ua: "Google Chrome";v="117", "Not;A=Brand";v="8", "Chromium";v="117"' --header 'sec-ch-ua-mobile: ?0' --header 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36' --header 'sec-ch-ua-platform: "Linux"' \
+https://pics.dmm.co.jp/digital/video/h_1416ad00524/h_1416ad00524jp-3.jpg
+
+```
 
