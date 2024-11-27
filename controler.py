@@ -60,10 +60,14 @@ def write_data(dict_jav):
     insert_data = list(map(_decode_utf8, (dict_jav['URL'], dict_jav['識別碼'], dict_jav['標題'], dict_jav['封面'], dict_jav['樣品圖像'], dict_jav['發行日期'], dict_jav['長度'], dict_jav['導演'], dict_jav['製作商'], dict_jav['發行商'], dict_jav['系列'], dict_jav['演員'], dict_jav['類別'], dict_jav['磁力链接'])))
     insert_data.append(dict_jav['無碼'])
     #插入数据
-    cursor.execute('''
-    INSERT INTO JAVBUS_DATA (URL, 識別碼, 標題, 封面, 樣品圖像, 發行日期, 長度, 導演, 製作商, 發行商, 系列, 演員, 類別, 磁力链接, 無碼)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ''', insert_data)
+    try:
+        cursor.execute('''
+        INSERT INTO JAVBUS_DATA (URL, 識別碼, 標題, 封面, 樣品圖像, 發行日期, 長度, 導演, 製作商, 發行商, 系列, 演員, 類別, 磁力链接, 無碼)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', insert_data)
+    except sqlite3.IntegrityError as err:
+        #print(err)
+        pass
     cursor.close()
     conn.commit()
     conn.close()
