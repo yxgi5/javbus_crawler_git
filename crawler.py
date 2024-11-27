@@ -105,6 +105,7 @@ def homeurl_handler(entrance):
     controler.create_db()
 
     if join_db(entrance) == 30:
+        print('done the incremental last page.......')
         return
 
     entrance_html = downloader.get_html(entrance)
