@@ -119,8 +119,8 @@ def singleurl_handler(entrance):
     join_db_single(entrance)
 
 if __name__ == '__main__':
-    homeurl_handler('https://www.javbus.com/ja')
-    homeurl_handler('https://www.javbus.com/ja/uncensored')
+    # homeurl_handler('https://www.javbus.com/ja')
+    # homeurl_handler('https://www.javbus.com/ja/uncensored')
     # homeurl_handler('https://www.javbus.com/ja/SDJS-271') # 1 + 5
     # singleurl_handler('https://www.javbus.com/ja/SDJS-271')
     # singleurl_handler('https://www.javbus.com/ja/SP-1000') # test 404 error
@@ -129,5 +129,5 @@ if __name__ == '__main__':
     # singleurl_handler('https://www.javbus.com/ja/EZD-269') # test bad page
     # homeurl_handler(sys.argv[1])
     # singleurl_handler(sys.argv[1])
-	# singleurl_handler('https://www.javbus.com/ja/' + sys.argv[1])
+	singleurl_handler('https://www.javbus.com/ja/' + sys.argv[1])
 

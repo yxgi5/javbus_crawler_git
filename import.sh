@@ -19,7 +19,7 @@ CREATE TABLE JAVBUS_DATA(
             演員      TEXT,
             類別      TEXT,
             磁力链接  TEXT,
-            无码      INTEGER);
+            無碼      INTEGER);
 .mode csv
 .separator |
 .header off
