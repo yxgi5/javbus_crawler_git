@@ -66,20 +66,21 @@ mv db_bango.list{.new,}
 ```
 
 ```
-cat all_bango_20240821.list | sed 's/[a-z]/\U&/g' | sort -u > all_bango_20240821.list.new
-mv all_bango_20240821.list{.new,}
+cat av.list | sed 's/[a-z]/\U&/g' | sort -u > av.list.new
+mv av.list{.new,}
 
-cat db_bango.list | sort -u > db_bango.list.new
-mv db_bango.list{.new,}
+diff -y -W 100 av.list db_bango.list | grep -a -F '<' | sed 's/^\(.*\)\ .*$/\1/' | sed 's/[[:space:]][[:space:]]*//g' | sed 's/[a-z]/\U&/g' | sort -u > tmp.list
 
-diff -y -W 100 all_bango_20240821.list db_bango.list | grep -a -F '<' | sed 's/^\(.*\)\ .*$/\1/' | sed 's/[[:space:]][[:space:]]*//g' | sed 's/[a-z]/\U&/g' | sort -u > tmp.list
-
-diff -y -W 100 all_bango_20240821.list db_bango.list | grep -a -F -e '|' > diff.txt
+diff -y -W 100 av.list db_bango.list | grep -a -F -e '|' > diff.txt
 cat diff.txt | sed -e 's/|/\n/' | sed 's/[[:space:]][[:space:]]*//g' | sed 's/[a-z]/\U&/g' | sort -u > diff.txt.new
 mv diff.txt{.new,}
 cat diff.txt | sed 's/[a-z]/\U&/g' | sort -u >> tmp.list
+rm diff.txt
 
 ./auto_start.sh
+
+diff -y -W 100 db_bango.list av.list | grep -a -F '<' | sed 's/^\(.*\)\ .*$/\1/' | sed 's/[[:space:]][[:space:]]*//g' | sed 's/[a-z]/\U&/g' | sort -u > input.list
+mv input.list ../New
 ```
 
 # download sample image
