@@ -60,13 +60,13 @@ def get_data_single(url):
     else:
         yield dict_jav
 
-def join_db(url,is_uncensored):
+def join_db(url):
     """the detail_dict of the url join the db"""
     bango_in_page_cnt = 0
     for dict_jav_data, detail_url in get_dict(url):
         if controler.check_url_not_in_table(detail_url):
             print("detail_url = %s not exist" % detail_url)
-            controler.write_data(dict_jav_data, is_uncensored)
+            controler.write_data(dict_jav_data)
         else:
             print("detail_url = %s exists" % detail_url)
             bango_in_page_cnt = bango_in_page_cnt + 1
@@ -76,7 +76,7 @@ def join_db(url,is_uncensored):
             # exit()
     return bango_in_page_cnt
 
-def join_db_single(url,is_uncensored):
+def join_db_single(url):
     """the detail_dict of the url join the db"""
 
     for dict_jav_data in get_data_single(url):
@@ -85,7 +85,7 @@ def join_db_single(url,is_uncensored):
 
         if controler.check_url_not_in_table(url):
             print("detail_url = %s not exist" % url)
-            controler.write_data(dict_jav_data, is_uncensored)
+            controler.write_data(dict_jav_data)
         else:
             print("detail_url = %s exists" % url)
             continue
@@ -95,16 +95,15 @@ def homeurl_handler(entrance):
         entrance = entrance[:-1]
     #创建数据表
     controler.create_db()
-    #无码为1，有码为0
-    is_uncensored = 1 if 'uncensored' in entrance else 0
-    if join_db(entrance, is_uncensored) == 30:
+
+    if join_db(entrance) == 30:
         return
 
     entrance_html = downloader.get_html(entrance)
     next_page_url = pageparser.get_next_page_url(entrance, entrance_html)
     while True:
         if next_page_url != None:
-            if join_db(next_page_url,is_uncensored) == 30:
+            if join_db(next_page_url) == 30:
                 break
         else:
             break
@@ -116,18 +115,17 @@ def singleurl_handler(entrance):
         entrance = entrance[:-1]
     #创建数据表
     controler.create_db()
-    #无码为1，有码为0
-    is_uncensored = 1 if 'uncensored' in entrance else 0
-    join_db_single(entrance, is_uncensored)
+
+    join_db_single(entrance)
 
 if __name__ == '__main__':
-    homeurl_handler('https://www.javbus.com/ja')
-    homeurl_handler('https://www.javbus.com/ja/uncensored')
+    # homeurl_handler('https://www.javbus.com/ja')
+    # homeurl_handler('https://www.javbus.com/ja/uncensored')
     # homeurl_handler('https://www.javbus.com/ja/SDJS-271') # 1 + 5
     # singleurl_handler('https://www.javbus.com/ja/SDJS-271')
     # singleurl_handler('https://www.javbus.com/ja/SP-1000') # test 404 error
     # singleurl_handler('https://www.javbus.com/ja/page/6') # test err url
-    # singleurl_handler('https://www.javbus.com/ja/HEYZO-3379') # test uncensored
+    singleurl_handler('https://www.javbus.com/ja/HEYZO-3379') # test uncensored
     # singleurl_handler('https://www.javbus.com/ja/EZD-269') # test bad page
     # homeurl_handler(sys.argv[1])
     #singleurl_handler(sys.argv[1])
