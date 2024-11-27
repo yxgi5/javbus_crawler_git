@@ -61,17 +61,17 @@ select URL from JAVBUS_DATA;
 .exit
 EOF
 
-cat db_bango.list | sed 's/https:\/\/www.javbus.com\/ja\///' | sed 's/https:\/\/www.javbus.com\///' | sort -u > db_bango.list.new
+cat db_bango.list | sed 's/https:\/\/www.javbus.com\/ja\///' | sed 's/https:\/\/www.javbus.com\///' | sed 's/[a-z]/\U&/g' | sort -u > db_bango.list.new
 mv db_bango.list{.new,}
 ```
 
 ```
-cat all_bango_20240821.list | sort -u > all_bango_20240821.list.new
+cat all_bango_20240821.list | sed 's/[a-z]/\U&/g' | sort -u > all_bango_20240821.list.new
 mv all_bango_20240821.list{.new,}
 cat db_bango.list | sort -u > db_bango.list.new
 mv db_bango.list{.new,}
 
-diff -y -W 100 all_bango_20240821.list db_bango.list | grep -a -F '<' | sed 's/^\(.*\)\ .*$/\1/' | sed 's/[[:space:]][[:space:]]*//g' | sort -u > tmp.list
+diff -y -W 100 all_bango_20240821.list db_bango.list | grep -a -F '<' | sed 's/^\(.*\)\ .*$/\1/' | sed 's/[[:space:]][[:space:]]*//g' | sed 's/[a-z]/\U&/g' | sort -u > tmp.list
 
 ./auto_start.sh
 ```
