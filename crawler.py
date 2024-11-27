@@ -112,8 +112,10 @@ def homeurl_handler(entrance):
     while True:
         if next_page_url != None:
             if join_db(next_page_url) == 30:
+                print('done the incremental last page.......')
                 break
         else:
+            print('done the last page.......')
             break
         next_page_html = downloader.get_html(next_page_url)
         next_page_url = pageparser.get_next_page_url(entrance, next_page_html)
