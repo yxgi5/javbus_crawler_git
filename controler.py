@@ -79,7 +79,7 @@ def check_url_not_in_table(url):
     cursor = conn.cursor()
     # print(url)
     # cursor.execute('select URL from JAVBUS_DATA where URL=?', (url.decode('utf-8'),))
-    cursor.execute('select URL from JAVBUS_DATA where URL=?', (url,))
+    cursor.execute('select URL from JAVBUS_DATA where URL=? COLLATE NOCASE limit 1', (url,))
     check = cursor.fetchall()
     cursor.close()
     conn.close()
