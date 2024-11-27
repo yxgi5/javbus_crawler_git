@@ -82,6 +82,7 @@ def get_next_page_url(entrance, html):
         next_page_link = next_page[0]['href'].split('/')[-2:]
         next_page_link = '/'+'/'.join(next_page_link)
         next_page_url = entrance + next_page_link
+        print("next page is %s" % next_page[0]['href'].split('/')[-1])
         return next_page_url
     return None
 

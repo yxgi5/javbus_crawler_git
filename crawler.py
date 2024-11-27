@@ -62,17 +62,19 @@ def get_data_single(url):
 
 def join_db(url,is_uncensored):
     """the detail_dict of the url join the db"""
-
+    bango_in_page_cnt = 0
     for dict_jav_data, detail_url in get_dict(url):
         if controler.check_url_not_in_table(detail_url):
             print("detail_url = %s not exist" % detail_url)
             controler.write_data(dict_jav_data, is_uncensored)
         else:
             print("detail_url = %s exists" % detail_url)
+            bango_in_page_cnt = bango_in_page_cnt + 1
             continue
             # print("it has updated over...window will be closed after 60s")
             # time.sleep(60)
             # exit()
+    return bango_in_page_cnt
 
 def join_db_single(url,is_uncensored):
     """the detail_dict of the url join the db"""
@@ -95,13 +97,15 @@ def homeurl_handler(entrance):
     controler.create_db()
     #无码为1，有码为0
     is_uncensored = 1 if 'uncensored' in entrance else 0
-    join_db(entrance, is_uncensored)
+    if join_db(entrance, is_uncensored) == 30:
+        return
 
     entrance_html = downloader.get_html(entrance)
     next_page_url = pageparser.get_next_page_url(entrance, entrance_html)
     while True:
         if next_page_url != None:
-            join_db(next_page_url,is_uncensored)
+            if join_db(next_page_url,is_uncensored) == 30:
+                break
         else:
             break
         next_page_html = downloader.get_html(next_page_url)

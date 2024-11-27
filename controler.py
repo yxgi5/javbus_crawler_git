@@ -61,7 +61,7 @@ def check_url_not_in_table(url):
 
     conn = sqlite3.connect("javbus.sqlite3.db")
     cursor = conn.cursor()
-    print(url)
+    # print(url)
     # cursor.execute('select URL from JAVBUS_DATA where URL=?', (url.decode('utf-8'),))
     cursor.execute('select URL from JAVBUS_DATA where URL=?', (url,))
     check = cursor.fetchall()
