@@ -73,9 +73,7 @@ EOF
 
 cat db_bango.list | sed 's/https:\/\/www.javbus.com\/ja\///' | sed 's/https:\/\/www.javbus.com\///' | sed 's/[a-z]/\U&/g' | sort -u > db_bango.list.new
 mv db_bango.list{.new,}
-```
 
-```
 cat av.list | sed 's/[a-z]/\U&/g' | sort -u > av.list.new
 mv av.list{.new,}
 
