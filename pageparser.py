@@ -76,12 +76,13 @@ def _parser_magnet(html):
 def get_next_page_url(entrance, html):
     """get_next_page_url(entrance, html),return the url of next page if exist"""
     print("done the page.......")
+    parsed_entrance = urlparse(entrance)
     soup = BeautifulSoup(html, "html.parser")
     next_page = soup.select('a[id="next"]')
     if next_page:
         next_page_link = next_page[0]['href'].split('/')[-2:]
         next_page_link = '/'+'/'.join(next_page_link)
-        next_page_url = entrance + next_page_link
+        next_page_url = f'{parsed_entrance.scheme}://{parsed_entrance.netloc}{parsed_entrance.path.rsplit("/", 2)[0]}' + next_page_link
         print("next page is %s" % next_page[0]['href'].split('/')[-1])
         return next_page_url
     return None
