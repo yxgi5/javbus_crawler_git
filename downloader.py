@@ -219,8 +219,10 @@ headers = {
 };
 
 proxies = {
-  "http": "http://127.0.0.1:8118",
-  "https": "http://127.0.0.1:8118",
+#  "http": "http://127.0.0.1:8118",
+#  "https": "http://127.0.0.1:8118",
+  "http": "http://127.0.0.1:10809",
+  "https": "http://127.0.0.1:10809",
 }
 
 def get_html(url, Referer_url=None, max_retries=5):
