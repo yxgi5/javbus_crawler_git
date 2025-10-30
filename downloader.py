@@ -6,6 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 from http.client import IncompleteRead
 import time
+import platform
 
 # proxy_addr = "127.0.0.1:8118"
 
@@ -218,10 +219,26 @@ headers = {
     'X-Requested-With': 'XMLHttpRequest',
 };
 
-proxies = {
-  "http": "http://127.0.0.1:8118",
-  "https": "http://127.0.0.1:8118",
-}
+if platform.system().lower().startswith("msys"):
+    proxies = {
+      "http": "http://127.0.0.1:10809",
+      "https": "http://127.0.0.1:10809",
+    }
+elif platform.system().lower().startswith("cygwin"):
+    proxies = {
+      "http": "http://127.0.0.1:10809",
+      "https": "http://127.0.0.1:10809",
+    }
+elif platform.system().lower().startswith("windows"):
+    proxies = {
+      "http": "http://127.0.0.1:10809",
+      "https": "http://127.0.0.1:10809",
+    }
+else:
+    proxies = {
+      "http": "http://127.0.0.1:8118",
+      "https": "http://127.0.0.1:8118",
+    }
 
 def get_html(url, Referer_url=None, max_retries=5):
     '''get_html(url),download and return html'''
